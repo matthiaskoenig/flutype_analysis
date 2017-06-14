@@ -5,3 +5,6 @@ sklearn
 scipy
 # jupyter notebook kernel
 ipykernel>=4.6.1
+opencv-python
+imutils
+scikit-image
