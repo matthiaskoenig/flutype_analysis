@@ -1,6 +1,6 @@
 import unittest
 
-
+@unittest.skip("not implemented")
 class MyTestCase(unittest.TestCase):
 
     """

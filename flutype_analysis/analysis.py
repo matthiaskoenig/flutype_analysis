@@ -1,3 +1,18 @@
+"""
+Analysis script.
+
+Information for a given microtiter or microarray consists of the following files
+with the following naming schema:
+        {id}_pep.gal : peptide gal file (which peptide at which location)
+        {id}_vir.gal : virus gal file (which virus at which location)
+        {id}.meta : additional information
+        {id}.csv : numerical data
+
+The numerical data in the csv is either direct data from the fluorescence reader,
+or spot intensities quantified from images.
+"""
+from __future__ import print_function, absolute_import
+import os
 import numpy as np
 import pandas as pd
 
@@ -6,110 +21,56 @@ from matplotlib.collections import EllipseCollection
 
 from sklearn import decomposition
 
-import os
+
+PATTERN_PEP_GAL = "{}_pep.gal"
+PATTERN_VIR_GAL = "{}_vir.gal"
+PATTERN_META = "{}.meta"
+PATTERN_DATA = "{}.csv"
+PATTERN_STD = "{}_std.csv"
 
 
-def load_data(data_id):
+def load_data(data_id, directory='data/flutype_test'):
+    """ Loads datasets for given data_id.
+    See naming schema above.
 
+    :param data_id: id of the Data
+    :return: dictionary of information
     """
-    :param data_id: The ID of the Data
-    :return: gal_pep,gal_vir,intensity,meta
-    """
-
     print("-" * 80)
-    print("Loading data corresponding to data ID :{}".format(data_id))
+    print("Loading data corresponding to data_id: <{}> in dir <{}>".format(data_id, directory))
     print("-" * 80)
 
-    count_vir = 0
-    count_pep = 0
-    count_meta = 0
-    count_int = 0
-    count_std = 0
+    f_gal_vir = os.path.join(directory, PATTERN_VIR_GAL.format(data_id))
+    gal_vir = pd.read_csv(f_gal_vir, sep='\t', index_col="ID")
+    print("Virus .gal :{}".format(f_gal_vir))
 
-    for fname in os.listdir('data/'):  # change directory as needed
-        if os.path.isfile('data/{}'.format(fname)):  # make sure it's a file,  not a directory entry
-            if "{}_vir.gal".format(data_id) in fname:  # search for vir.gal
-                gal_vir = pd.read_csv("data/{}".format(fname),
-                                      sep='\t', index_col="ID")
+    f_gal_pep = os.path.join(directory, PATTERN_PEP_GAL.format(data_id))
+    gal_pep = pd.read_csv(f_gal_pep, sep='\t', index_col="ID")
+    print("Peptide .gal :{}".format(f_gal_pep))
 
-                print("Virus .gal :{}".format(fname))
-                count_vir += 1
+    f_meta = os.path.join(directory, PATTERN_META.format(data_id))
+    meta = pd.read_csv(f_meta, sep='\t')
+    print("Meta  :{}".format(f_meta))
 
-            elif "{}_pep.gal".format(data_id) in fname: # search for pep.gal
-                gal_pep = pd.read_csv("data/{}".format(fname), sep='\t',
-                                      index_col="ID")
-                print("Peptide .gal :{}".format(fname))
-                count_pep += 1
+    f_data = os.path.join(directory, PATTERN_DATA.format(data_id))
+    data = pd.read_csv(f_data, sep='\t', index_col=0)
+    print("Spot intensity file  :{}".format(f_data))
 
-            elif "{}.meta".format(data_id) in fname: # search for meta
-                meta = pd.read_csv("data/{}".format(fname), sep='\t')
+    f_std = os.path.join(directory, PATTERN_STD.format(data_id))
 
-                print("Meta  :{}".format(fname))
-                count_meta += 1
+    d = {'data_id': data_id,
+         'data': data,
+         'gal_pep': gal_pep,
+         'gal_vir': gal_vir,
+         'meta': meta}
 
-            elif "{}.csv".format(data_id) in fname: # search for intensity
-                spot_intensity = pd.read_csv("data/{}".format(fname),
-                                             sep='\t', index_col=0)
-                print("Spot intensity file  :{}".format(fname))
-                count_int += 1
+    if os.path.exists(f_std):
+        d['data_std'] = pd.read_csv(f_std, sep='\t', index_col=0)
+        print("Intensity standard deviation:{}".format(f_std))
+    else:
+        print("Spot intensities for the data ID ({}) are not averaged but primary values".format(data_id))
 
-            elif "{}_std.csv".format(data_id) in fname:  # search for intensity
-                spot_intensity_std = pd.read_csv("data/{}".format(fname),
-                                             sep='\t', index_col=0)
-                print("Intensity standard deviation:{}".format(fname))
-                count_std += 1
-
-    counter_all = [count_pep,count_meta,count_vir,count_int]
-
-    print("-" * 80)
-    if not (count_pep == 1):
-        if count_pep < 1:
-            raise Exception(
-                "The pep.gal data was not found in /data")
-        elif count_pep > 1:
-            raise Exception(
-            "To many coresponding pep.gal data in /data")
-
-
-    if not (count_vir == 1):
-
-        if count_vir < 1:
-            raise Exception(
-                "The vir.gal data was not found in /data")
-        elif count_vir > 1:
-            raise Exception(
-                "To many coresponding vir.gal data in /data.")
-
-    if not (count_meta == 1):
-
-        if count_meta < 1:
-            raise Exception(
-                "The meta data was not found in /data")
-        elif count_meta > 1:
-            raise Exception(
-                "To many coresponding meta data in /data.")
-
-    if not (count_int == 1):
-        if count_int < 1:
-            raise Exception(
-                "The intensity data was not found in /data")
-
-        elif count_int > 1:
-            raise Exception(
-                "To many coresponding data with Spot intensity in /data.")
-    elif not (count_std == 1):
-            if count_std < 1:
-                spot_intensity_std = 0
-                print("Spot intensities for the data ID ({}) are not averaged but primary values".format(data_id))
-                print("-" * 80)
-            elif count_std > 1:
-                raise Exception(
-                    "To many coresponding data with standard deviation in /data.")
-
-    if all( count == 1 for count in  counter_all):
-        print(" Necessary coresponding data was loaded ")
-        print("-" * 80)
-        return [data_id,spot_intensity,spot_intensity_std ,gal_pep ,gal_vir ,meta]
+    return d
 
 
 def map_strings_to_number(strings):
