@@ -12,3 +12,8 @@ pip install -r requirements.txt
 cd ~/git/flutype-analysis
 python -m ipykernel install --user --name=flutype-analysis
 ```
+
+Installation of package for development
+```
+pip install -e .
+```

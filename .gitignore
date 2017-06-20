@@ -1,5 +1,7 @@
 .idea/
 *.log
 *.pyc
+.tox/
+flutype_analysis.egg-info/
 notebooks/.ipynb_checkpoints/
 notebooks/oven/.ipynb_checkpoints/

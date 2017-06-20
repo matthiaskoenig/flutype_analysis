@@ -53,7 +53,7 @@ def read(*names, **kwargs):
 
 setup_kwargs = {}
 try:
-    verstrline = read('sbmlutils/_version.py')
+    verstrline = read('flutype_analysis/_version.py')
     mo = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", verstrline, re.M)
     if mo:
         verstr = mo.group(1)
@@ -71,32 +71,31 @@ except(IOError, ImportError):
     long_description = open('README.md').read()
 setup_kwargs['long_description'] = long_description
 
+
 setup(
-    name='sbmlutils',
-    description='SBML python utilities',
-    url='https://github.com/matthiaskoenig/sbmlutils',
-    author='Matthias König',
-    author_email='konigmatt@googlemail.com',
+    name='flutype_analysis',
+    description='Analysis of microarray and microtiter plates',
+    url='https://github.com/matthiaskoenig/flutype_analysis',
+    author='Janek Grzegorzewski & Matthias König',
+    author_email='janek89@hotmail.de',
     license='LGPLv3',
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 4 - Alpha',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Cython',
         'Programming Language :: Python :: Implementation :: CPython',
         'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Bio-Informatics'
     ],
-    keywords='SBML, dynamic FBA, DFBA, model merging',
+    keywords='microtiter',
     packages=find_packages(),
     # package_dir={'': ''},
     package_data={
-      '': ['../requirements.txt',
-           'tests/data'],
+      '': ['../requirements.txt'],
     },
     include_package_data=True,
     zip_safe=False,
