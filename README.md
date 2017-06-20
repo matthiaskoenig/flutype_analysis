@@ -26,3 +26,5 @@ tox -e py27
 tox -e py35
 tox -e py36
 ```
+
+&copy; 2017 Janek Grzegorzewski & Matthias König.
