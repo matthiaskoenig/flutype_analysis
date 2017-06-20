@@ -15,3 +15,16 @@ def test_load_data():
     assert 'meta' in d
     assert 'gal_pep' in d
     assert 'gal_vir' in d
+
+
+def test_create_spot():
+    directory = testdata.MICROARRAY_FLUTYPE_TEST_DIR
+    data_id = testdata.MICROARRAY_FLUTYPE_TEST_DATA_ID
+    d = analysis.load_data(data_id, directory)
+    # creates the spot DataFrame
+    a = analysis.Analysis(d)
+
+    assert hasattr(a, 'spot')
+    assert a.spot is not None
+    assert len(a.spot) > 0
+
