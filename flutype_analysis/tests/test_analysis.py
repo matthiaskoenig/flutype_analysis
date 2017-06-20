@@ -22,9 +22,25 @@ def test_create_spot():
     data_id = testdata.MICROARRAY_FLUTYPE_TEST_DATA_ID
     d = analysis.load_data(data_id, directory)
     # creates the spot DataFrame
-    a = analysis.Analysis(d)
+    ana = analysis.Analysis(d)
 
-    assert hasattr(a, 'spot')
-    assert a.spot is not None
-    assert len(a.spot) > 0
+    assert hasattr(ana, 'spot')
+    assert ana.spot is not None
+    assert len(ana.spot) > 0
 
+
+# FIXME: This is not working yet, setup and teardown for pytest needed
+class TestAnalysis:
+    def setup_method(self, test_method):
+        directory = testdata.MICROARRAY_FLUTYPE_TEST_DIR
+        data_id = testdata.MICROARRAY_FLUTYPE_TEST_DATA_ID
+        d = analysis.load_data(data_id, directory)
+        # creates the spot DataFrame
+        self.ana = analysis.Analysis(d)
+
+    def teardown_method(self, test_method):
+        self.ana = None
+
+    def test_heatmap(self):
+        fig = ana.heatmap(figsize=(20, 10))
+        assert fig is not None

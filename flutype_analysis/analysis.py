@@ -43,7 +43,7 @@ def load_data(data_id, directory='data/flutype_test'):
 
     f_gal_vir = os.path.join(directory, PATTERN_VIR_GAL.format(data_id))
     gal_vir = pd.read_csv(f_gal_vir, sep='\t', index_col="ID")
-    print("Virus .gal :{}".format(f_gal_vir))
+    print("{}:{}".format("Virus .gal", f_gal_vir))
 
     f_gal_pep = os.path.join(directory, PATTERN_PEP_GAL.format(data_id))
     gal_pep = pd.read_csv(f_gal_pep, sep='\t', index_col="ID")
