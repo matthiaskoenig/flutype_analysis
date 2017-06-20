@@ -1,4 +1,6 @@
 .idea/
+.cache/
+dist
 *.log
 *.pyc
 .tox/
