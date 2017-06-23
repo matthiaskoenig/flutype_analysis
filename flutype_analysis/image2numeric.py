@@ -173,7 +173,7 @@ def spot_close_two_grid(x,y,pitch):
 
     pts =np.vstack([x, y]).reshape(2, -1).T
     for i in range(len(x)):
-        near = nearest_neighbour(pts,pts[i])
+        near = nearest_neighbour(pts[i],pts)
         if near < 2 * pitch:
             near_pts.append(near)
     pts = pts[near_pts]
