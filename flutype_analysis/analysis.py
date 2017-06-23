@@ -21,106 +21,13 @@ from sklearn import decomposition
 
 from flutype_analysis import correlation
 from flutype_analysis import utils
+from flutype_analysis import base
 
+class Analysis(base.Base):
 
-PATTERN_PEP_GAL = "{}_pep.gal"
-PATTERN_VIR_GAL = "{}_vir.gal"
-PATTERN_META = "{}.meta"
-PATTERN_DATA = "{}.csv"
-PATTERN_STD = "{}_std.csv"
+    def  __init__(self , d_data):
+        base.Base.__init__(self , d_data)
 
-
-def load_data(data_id, directory='data/flutype_test'):
-    """ Loads datasets for given data_id.
-    See naming schema above.
-
-    :param data_id: id of the Data
-    :return: dictionary of information
-    """
-    print("-" * 80)
-    print("Loading data corresponding to data_id: <{}> in dir <{}>".format(data_id, directory))
-    print("-" * 80)
-
-    f_gal_vir = os.path.join(directory, PATTERN_VIR_GAL.format(data_id))
-    gal_vir = pd.read_csv(f_gal_vir, sep='\t', index_col="ID")
-    print("{}:{}".format("Virus .gal", f_gal_vir))
-
-    f_gal_pep = os.path.join(directory, PATTERN_PEP_GAL.format(data_id))
-    gal_pep = pd.read_csv(f_gal_pep, sep='\t', index_col="ID")
-    print("Peptide .gal :{}".format(f_gal_pep))
-
-    f_meta = os.path.join(directory, PATTERN_META.format(data_id))
-    meta = pd.read_csv(f_meta, sep='\t')
-    print("Meta  :{}".format(f_meta))
-
-    f_data = os.path.join(directory, PATTERN_DATA.format(data_id))
-    data = pd.read_csv(f_data, sep='\t', index_col=0)
-    print("Spot intensity file  :{}".format(f_data))
-
-    f_std = os.path.join(directory, PATTERN_STD.format(data_id))
-
-    d = {'data_id': data_id,
-         'data': data,
-         'gal_pep': gal_pep,
-         'gal_vir': gal_vir,
-         'meta': meta}
-
-    if os.path.exists(f_std):
-        d['data_std'] = pd.read_csv(f_std, sep='\t', index_col=0)
-        print("Intensity standard deviation:{}".format(f_std))
-    else:
-        print("Spot intensities for the data ID ({}) are not averaged but primary values".format(data_id))
-
-    return d
-
-
-class Analysis(object):
-
-    def __init__(self, d_data):
-        """ Init analysis object from given data dictionary. """
-        self.data_id = d_data['data_id']
-        self.meta = d_data['meta']
-
-        self.spot = self.create_spot(gal_vir=d_data["gal_vir"],
-                                     gal_pep=d_data["gal_pep"],
-                                     data=d_data["data"],
-                                     data_std=d_data.get("data_std", None))
-
-    @staticmethod
-    def create_spot(gal_vir, gal_pep, data, data_std=None):
-        """ Creates pandas DataFrame from input data.
-        Subsequent analysis use the spot DataFrame.
-
-        :return:
-        """
-        vir_cor = gal_vir.pivot(index="Row", columns="Column", values="Name")
-        pep_cor = gal_pep.pivot(index="Row", columns="Column", values="Name")
-
-        # merge complete spotinformation
-        vir_cor_unstacked = vir_cor.unstack()
-        spot = pep_cor.unstack()
-        spot = spot.reset_index()
-        spot = spot.rename(columns={0: "Peptide"})
-        spot["Referenz"] = spot["Peptide"].str.contains("Leuchte")
-        spot["Virus"] = vir_cor_unstacked.values
-        spot["Intensity"] = data.unstack().values
-
-        if data_std:
-            spot["Std"] = data_std.unstack().values
-        else:
-            spot["Std"] = np.NaN
-
-        # how often this spot measured
-        spot["Replica"] = 0
-        for virus_unique in spot["Virus"].unique():
-            for peptide_unique in spot["Peptide"].unique():
-                replica = 0
-                for index in spot.index:
-                    if spot["Virus"][index] == virus_unique and spot["Peptide"][index] == peptide_unique:
-                        spot.set_value(index, "Replica", replica)
-                        replica += 1
-
-        return spot
 
     def heatmap(self, descript=True, heatmap=True, **kwargs):
         """ Creates heatmap
@@ -194,7 +101,7 @@ class Analysis(object):
                     # add x-tick position and label for virus
                     virus_ticks_x_axis.append(index_peptide + index_virus * spacing)
                     virus_label_x_axis.append(virus)
-                    data=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["Virus"] == virus)]["Intensity"]
+                    data=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["pitchVirus"] == virus)]["Intensity"]
                     data_std=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["Virus"] == virus)]["Std"]
 
                     ax.scatter(index_peptide  * np.ones(data.shape) + index_virus * spacing, data,
