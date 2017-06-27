@@ -7,6 +7,9 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import os
 import cv2
+import flutype_analysis
+
+
 PATTERN_PEP_GAL = "{}_pep.gal"
 PATTERN_VIR_GAL = "{}_vir.gal"
 PATTERN_META = "{}.meta"
@@ -101,3 +104,32 @@ def assure_path_exists(path):
     dir = os.path.dirname(path)
     if not os.path.exists(dir):
         os.makedirs(dir)
+
+def merge_dataset(data1_id,data1_dir,data2_id, data2_dir, name):
+    assure_path_exists("data/" + name + "/")
+    data1 = load_data(data_id=data1_id, directory=data1_dir, what="all")
+    data2 = load_data(data_id=data2_id, directory=data2_dir, what="all")
+    ana1 = flutype_analysis.analysis.Analysis(data1)
+    ana2 = flutype_analysis.analysis.Analysis(data2)
+
+    ana1.spots()
+
+def spot_data(spot,fname):
+    spot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

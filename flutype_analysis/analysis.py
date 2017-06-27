@@ -12,7 +12,6 @@ The numerical data in the csv is either direct data from the fluorescence reader
 or spot intensities quantified from images.
 """
 from __future__ import print_function, absolute_import
-import os
 import numpy as np
 import pandas as pd
 
@@ -45,7 +44,8 @@ class Analysis(base.Base):
         else:
             alpha = 1.0
         if heatmap:
-            ax.imshow(self.spot.pivot(index='Column', columns='Row', values='Intensity'), interpolation='nearest',
+            ax.imshow(self.spot.pivot(index='Column', columns='Row',
+                                      values='Intensity'), interpolation='nearest',
                     cmap="hot", alpha=alpha)
         # plt.pcolor(Spot["Intensity"].unstack())
         # text portion
@@ -70,7 +70,7 @@ class Analysis(base.Base):
 
         return fig
 
-    def barplot(self, align="pep", **kwargs):
+    def barplot(self, align="pep", scale="log", **kwargs):
         """ Create barplot
 
         :param align: flag for aligning with peptides 'pep' or virus 'vir'
@@ -101,7 +101,7 @@ class Analysis(base.Base):
                     # add x-tick position and label for virus
                     virus_ticks_x_axis.append(index_peptide + index_virus * spacing)
                     virus_label_x_axis.append(virus)
-                    data=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["pitchVirus"] == virus)]["Intensity"]
+                    data=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["Virus"] == virus)]["Intensity"]
                     data_std=self.spot.loc[(self.spot['Peptide'] == peptide) & (self.spot["Virus"] == virus)]["Std"]
 
                     ax.scatter(index_peptide  * np.ones(data.shape) + index_virus * spacing, data,
@@ -109,7 +109,7 @@ class Analysis(base.Base):
                     if len(data) > 1:
                         bp = ax.boxplot(data.values, positions=[index_peptide+index_virus*spacing],
                                          patch_artist=True, showfliers=False,widths=spacing)
-                        plt.setp(bp['boxes'], color=cmap(index_virus*1.0 / Npeptides), alpha=0.5)
+                        plt.setp(bp['boxes'], color=cmap(index_virus*1.0 / Nvirus), alpha=0.5)
 
                 # add x-tick position and label for peptide
                 peptide_ticks_x_axis.append(index_peptide + 0.5 - spacing * 0.5)
@@ -118,14 +118,14 @@ class Analysis(base.Base):
                 plt.axvline(x=index_peptide + 1 - spacing * 0.5 )
 
             # setup upper x-axis
-            plt.xticks(peptide_ticks_x_axis,peptide_label_x_axis,fontsize="large",rotation=90)
+            plt.xticks(peptide_ticks_x_axis,peptide_label_x_axis,fontsize="x-large",rotation=90)
             ax.set_xlim(-0.5*spacing , index_peptide + 1 - spacing * 0.5 )
 
+
             # setup lower x-axis
-            ax2.set_xlim(ax.get_xlim())
             ax2.set_xticks(virus_ticks_x_axis)
             #["peptide " + str(s) for s in output.columns]
-            ax2.set_xticklabels(virus_label_x_axis,rotation=90,fontsize="large")
+            ax2.set_xticklabels(virus_label_x_axis,rotation=90, fontsize="x-small" )
 
         # virus aligned
         elif align == "vir":
@@ -152,16 +152,16 @@ class Analysis(base.Base):
                 plt.axvline(x=index_virus + 1 - spacing * 0.5)
 
             # setup upper x-axis
-            plt.xticks(virus_ticks_x_axis, virus_label_x_axis, fontsize="large", rotation=90)
+            plt.xticks(virus_ticks_x_axis, virus_label_x_axis, fontsize="x-large", rotation=90)
             ax.set_xlim(-0.5 * spacing, index_virus + 1 - spacing * 0.5)
 
             # setup lower x-axis
-            ax2.set_xlim(ax.get_xlim())
             ax2.set_xticks(peptide_ticks_x_axis)
-            ax2.set_xticklabels(peptide_label_x_axis, rotation=90, fontsize="large")
-            ax2.tick_params(labelsize="large")
+            ax2.set_xticklabels(peptide_label_x_axis, rotation=90, fontsize = "x-small")
 
-        ax2.tick_params(labelsize="large")
+        ax.set_ylim(self.spot["Intensity"].min(), self.spot["Intensity"].max())
+        ax2.set_yscale(scale)
+        ax2.set_xlim(ax.get_xlim())
         ax2.set_ylabel("Intensity", fontsize="x-large")
 
         return fig

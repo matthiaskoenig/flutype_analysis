@@ -168,20 +168,22 @@ def spot_quality_shape(x,y):
 
     return x_spread/y_spread
 
-def spot_close_two_grid(x,y,pitch):
+
+def spots_close_to_grid(x, y, pitch):
     near_pts = []
 
-    pts =np.vstack([x, y]).reshape(2, -1).T
+    ptss = np.vstack([x, y]).reshape(2, -1).T
     for i in range(len(x)):
-        near = nearest_neighbour(pts[i],pts)
-        if near < 2 * pitch:
-            near_pts.append(near)
-    pts = pts[near_pts]
+        pts = ptss
+        point = pts[i]
+        pts = np.delete(pts, i, 0)
 
-    return pts[:,0], pts[:,1]
+        near =nearest_neighbour(point, pts)
+        if get_mean_distance(pts[near, 0], pts[near, 1], point[0], point[1]) < 3 * pitch:
+            near_pts.append(i)
+    pts = ptss[near_pts]
 
-
-
+    return pts[:, 0], pts[:, 1]
 
 
 class Image2numeric(base.Base):
