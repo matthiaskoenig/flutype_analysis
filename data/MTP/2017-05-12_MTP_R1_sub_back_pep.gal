@@ -1,97 +1,97 @@
-ID	Block	Row	Column	Name
-1	1	1	1	Peptid 6
-2	1	1	2	Peptid 6
-3	1	1	3	Peptid 6
-4	1	1	4	Peptid 6
-5	1	1	5	Peptid 6
-6	1	1	6	Peptid 6
-7	1	1	7	Peptid 6
-8	1	1	8	Peptid 6
-9	1	1	9	Peptid 6
-10	1	1	10	Peptid 6
-11	1	1	11	Peptid 6
-12	1	1	12	Peptid 6
-13	1	2	1	Peptid 7
-14	1	2	2	Peptid 7
-15	1	2	3	Peptid 7
-16	1	2	4	Peptid 7
-17	1	2	5	Peptid 7
-18	1	2	6	Peptid 7
-19	1	2	7	Peptid 7
-20	1	2	8	Peptid 7
-21	1	2	9	Peptid 7
-22	1	2	10	Peptid 7
-23	1	2	11	Peptid 7
-24	1	2	12	Peptid 7
-25	1	3	1	Peptid 8
-26	1	3	2	Peptid 8
-27	1	3	3	Peptid 8
-28	1	3	4	Peptid 8
-29	1	3	5	Peptid 8
-30	1	3	6	Peptid 8
-31	1	3	7	Peptid 8
-32	1	3	8	Peptid 8
-33	1	3	9	Peptid 8
-34	1	3	10	Peptid 8
-35	1	3	11	Peptid 8
-36	1	3	12	Peptid 8
-37	1	4	1	Peptid 9
-38	1	4	2	Peptid 9
-39	1	4	3	Peptid 9
-40	1	4	4	Peptid 9
-41	1	4	5	Peptid 9
-42	1	4	6	Peptid 9
-43	1	4	7	Peptid 9
-44	1	4	8	Peptid 9
-45	1	4	9	Peptid 9
-46	1	4	10	Peptid 9
-47	1	4	11	Peptid 9
-48	1	4	12	Peptid 9
-49	1	5	1	Peptid 11
-50	1	5	2	Peptid 11
-51	1	5	3	Peptid 11
-52	1	5	4	Peptid 11
-53	1	5	5	Peptid 11
-54	1	5	6	Peptid 11
-55	1	5	7	Peptid 11
-56	1	5	8	Peptid 11
-57	1	5	9	Peptid 11
-58	1	5	10	Peptid 11
-59	1	5	11	Peptid 11
-60	1	5	12	Peptid 11
-61	1	6	1	Fetuin
-62	1	6	2	Fetuin
-63	1	6	3	Fetuin
-64	1	6	4	Fetuin
-65	1	6	5	Fetuin
-66	1	6	6	Fetuin
-67	1	6	7	Fetuin
-68	1	6	8	Fetuin
-69	1	6	9	Fetuin
-70	1	6	10	Fetuin
-71	1	6	11	Fetuin
-72	1	6	12	Fetuin
-73	1	7	1	Peptid Nenad
-74	1	7	2	Peptid Nenad
-75	1	7	3	Peptid Nenad
-76	1	7	4	Peptid Nenad
-77	1	7	5	Peptid Nenad
-78	1	7	6	Peptid Nenad
-79	1	7	7	Peptid Nenad
-80	1	7	8	Peptid Nenad
-81	1	7	9	Peptid Nenad
-82	1	7	10	Peptid Nenad
-83	1	7	11	Peptid Nenad
-84	1	7	12	Peptid Nenad
-85	1	8	1	Puffer
-86	1	8	2	Puffer
-87	1	8	3	Puffer
-88	1	8	4	Puffer
-89	1	8	5	Puffer
-90	1	8	6	Puffer
-91	1	8	7	Puffer
-92	1	8	8	Puffer
-93	1	8	9	Puffer
-94	1	8	10	Puffer
-95	1	8	11	Puffer
-96	1	8	12	Puffer
+Block	Row	Column	Name	ID
+1	1	1	L002	1
+1	1	2	L002	2
+1	1	3	L002	3
+1	1	4	L002	4
+1	1	5	L002	5
+1	1	6	L002	6
+1	1	7	L002	7
+1	1	8	L002	8
+1	1	9	L002	9
+1	1	10	L002	10
+1	1	11	L002	11
+1	1	12	L002	12
+1	2	1	P007	13
+1	2	2	P007	14
+1	2	3	P007	15
+1	2	4	P007	16
+1	2	5	P007	17
+1	2	6	P007	18
+1	2	7	P007	19
+1	2	8	P007	20
+1	2	9	P007	21
+1	2	10	P007	22
+1	2	11	P007	23
+1	2	12	P007	24
+1	3	1	L003	25
+1	3	2	L003	26
+1	3	3	L003	27
+1	3	4	L003	28
+1	3	5	L003	29
+1	3	6	L003	30
+1	3	7	L003	31
+1	3	8	L003	32
+1	3	9	L003	33
+1	3	10	L003	34
+1	3	11	L003	35
+1	3	12	L003	36
+1	4	1	L005	37
+1	4	2	L005	38
+1	4	3	L005	39
+1	4	4	L005	40
+1	4	5	L005	41
+1	4	6	L005	42
+1	4	7	L005	43
+1	4	8	L005	44
+1	4	9	L005	45
+1	4	10	L005	46
+1	4	11	L005	47
+1	4	12	L005	48
+1	5	1	L006	49
+1	5	2	L006	50
+1	5	3	L006	51
+1	5	4	L006	52
+1	5	5	L006	53
+1	5	6	L006	54
+1	5	7	L006	55
+1	5	8	L006	56
+1	5	9	L006	57
+1	5	10	L006	58
+1	5	11	L006	59
+1	5	12	L006	60
+1	6	1	L001	61
+1	6	2	L001	62
+1	6	3	L001	63
+1	6	4	L001	64
+1	6	5	L001	65
+1	6	6	L001	66
+1	6	7	L001	67
+1	6	8	L001	68
+1	6	9	L001	69
+1	6	10	L001	70
+1	6	11	L001	71
+1	6	12	L001	72
+1	7	1	L007	73
+1	7	2	L007	74
+1	7	3	L007	75
+1	7	4	L007	76
+1	7	5	L007	77
+1	7	6	L007	78
+1	7	7	L007	79
+1	7	8	L007	80
+1	7	9	L007	81
+1	7	10	L007	82
+1	7	11	L007	83
+1	7	12	L007	84
+1	8	1	Buffer01	85
+1	8	2	Buffer01	86
+1	8	3	Buffer01	87
+1	8	4	Buffer01	88
+1	8	5	Buffer01	89
+1	8	6	Buffer01	90
+1	8	7	Buffer01	91
+1	8	8	Buffer01	92
+1	8	9	Buffer01	93
+1	8	10	Buffer01	94
+1	8	11	Buffer01	95
+1	8	12	Buffer01	96
