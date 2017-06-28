@@ -2,6 +2,7 @@
 Utility and helper functions.
 """
 from __future__ import print_function, absolute_import
+import os.path
 import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -53,8 +54,9 @@ def load_data(data_id, directory='data/flutype_test', what="all"):
         print("Spot intensity file  :{}".format(f_data))
 
     f_tif = os.path.join(directory, PATTERN_TIF.format(data_id))
-    d['tif'] = cv2.imread(f_tif, 0)
-    print("Image file  :{}".format(f_tif))
+    if os.path.exists(f_tif):
+        d['tif'] = cv2.imread(f_tif, 0)
+        print("Image file  :{}".format(f_tif))
 
     f_std = os.path.join(directory, PATTERN_STD.format(data_id))
 
