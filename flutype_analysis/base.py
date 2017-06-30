@@ -32,8 +32,12 @@ class Base(object):
         spot = pep_cor.unstack()
         spot = spot.reset_index()
         spot = spot.rename(columns={0: "Peptide"})
-        spot["Referenz"] = spot["Peptide"].str.contains("Leuchte")
+        spot["Reference"] = spot["Peptide"].str.contains("DYE")
         spot["Virus"] = vir_cor_unstacked.values
+        spot["Buffer"] = spot["Peptide"].str.match("Buffer")
+        spot["No_Peptide"] = spot["Peptide"].str.match("NO")
+
+
 
         if data is None:
             spot["Intensity"] = np.NaN

@@ -17,10 +17,16 @@ import pandas as pd
 
 import matplotlib.pyplot as plt
 from sklearn import decomposition
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 from flutype_analysis import correlation
 from flutype_analysis import utils
 from flutype_analysis import base
+
+
+from jinja2 import Environment, FileSystemLoader
+
+import os
 
 class Analysis(base.Base):
 
@@ -169,23 +175,41 @@ class Analysis(base.Base):
 
     ### PCA ###
 
-    def reshape_pca(self):
+    def reshape_pca(self, antibody=False):
         # this should be later on in classfication
-        spots_pca = self.spot[["Peptide", "Virus", "Intensity", "Replica","Referenz"]]
+        spots_pca = self.spot[["Peptide", "Virus", "Intensity", "Replica","Reference","No_Peptide","Buffer"]]
         # exclude referenz peptides
-        spots_pca = spots_pca[~spots_pca["Referenz"]]
+        spots_pca = spots_pca[~spots_pca["Reference"]]
+        #exclude empty
+        spots_pca = spots_pca[~spots_pca["No_Peptide"]]
+        #exclude buffer
+        spots_pca = spots_pca[~spots_pca["Buffer"]]
+
+        #exclude antibodies
+        if not antibody:
+            spots_pca = spots_pca[~spots_pca["Peptide"].str.contains("AK")]
+
+
         spots_pca = spots_pca.set_index(["Virus", "Peptide", "Replica"])
         spots_pca = spots_pca.pivot_table(index=["Virus", "Replica"], columns="Peptide", values="Intensity")
         #  here a different method could be better. e.g. mean ...
         spots_pca_complete = spots_pca.dropna()
+
+
         # ---------------------------------------#
         # maybe an algorithm for selcting only
         # good peptides is reasonable
 
+
+
         return  spots_pca_complete
 
-    def pca(self):
+    def classifier(self, type ="PCA", **kwargs):
         """
+
+        type    PCA :
+                IPA : Independened Component Analysis)
+                LDA : LinearDiscriminantAnalysis
 
         :return: (output_pca, pca_score, pca_components[0], feature_max_cor, cor_to_strongest_feature): where:
             output_pca: pd.Dataframe with output_pca[0,1] pca values, output_pca['color'] in numeric values
@@ -196,24 +220,62 @@ class Analysis(base.Base):
 
         """
         # this should be probably later on in classification
-        spots_pca_complete = self.reshape_pca()
+        spots_pca_complete = self.reshape_pca(**kwargs)
+
         if len(spots_pca_complete.columns) > 1 and len(spots_pca_complete.index) > 1:
             # build model
-            pca = decomposition.PCA()
-            pca.fit(spots_pca_complete)
+            if type == "PCA":
+                classifier = decomposition.PCA()
+                classifier.fit(spots_pca_complete)
+            elif type == "ICA":
+                classifier = decomposition.FastICA()
+                classifier.fit(spots_pca_complete)
 
-            # perform pca
-            pca_score = pca.explained_variance_ratio_
-            pca_components = pca.components_
-            x_train_pca = pca.transform(spots_pca_complete)
+            elif type == "LDA":
+                classifier = LinearDiscriminantAnalysis(n_components=5)
+                y=spots_pca_complete.index.droplevel(1).values
+                classifier.fit(spots_pca_complete,y)
+
+
+
+
+            x_train_pca = classifier.transform(spots_pca_complete)
             output_pca = pd.DataFrame(x_train_pca, index=spots_pca_complete.index)
 
             # store color information
             output_pca.insert(0, "color", utils.map_strings_to_number(spots_pca_complete.index.droplevel(1)))
 
-            corr_values = dict(zip(spots_pca_complete.columns, pca_components[0]))
-            feature_max_cor = max(corr_values, key=corr_values.get)
-            cor_to_strongest_feature = spots_pca_complete[spots_pca_complete.columns[:]].corr()[feature_max_cor][:]
+
+
+
+            if type == "ICA":
+                pca_score = None
+
+
+            else:
+                pca_score = classifier.explained_variance_ratio_
+
+
+            if type == "LDA":
+                pca_components = 0
+                pca_components = classifier.coef_
+                two_pca_components = pd.DataFrame(pca_components[:2, :].T, index=spots_pca_complete.columns.values,
+                                                  columns=["Pca_Component_1", "Pca_Component_2"])
+                two_pca_components.sort_values(["Pca_Component_1"], inplace=True, ascending=False)
+
+                return output_pca, pca_score,two_pca_components
+
+            else:
+                pca_components = classifier.components_
+                two_pca_components = pd.DataFrame(pca_components[:2,:].T,index=spots_pca_complete.columns.values, columns=["Pca_Component_1","Pca_Component_2"])
+                two_pca_components.sort_values(["Pca_Component_1"], inplace=True, ascending=False)
+                corr_values = dict(zip(spots_pca_complete.columns, pca_components[0]))
+                feature_max_cor = max(corr_values, key=corr_values.get)
+                cor_to_strongest_feature = spots_pca_complete[spots_pca_complete.columns[:]].corr()[feature_max_cor][:]
+
+                return output_pca, pca_score, two_pca_components, feature_max_cor, cor_to_strongest_feature
+
+
 
 
         elif len(spots_pca_complete.columns) < 2:
@@ -222,7 +284,7 @@ class Analysis(base.Base):
             raise Exception("You have selected measuraments with less than two two viruses (also replica) with complete set." \
                   "PCA possible  ")
 
-        return output_pca, pca_score, pca_components[0], feature_max_cor, cor_to_strongest_feature
+
 
     ### CORRELATION ###
 
@@ -271,4 +333,22 @@ class Analysis(base.Base):
                 fig.tight_layout()
 
         return fig
+
+
+
+    def components_to_html(self, **kwargs):
+        """
+        writes a pdf with with the principle components into the corresponding results directory.
+        :return:
+        """
+
+        data_pca = self.classifier(**kwargs)
+        env = Environment(loader=FileSystemLoader('..'))
+        directory = "/html/"
+        hfile = os.path.join(directory, "principle_component.html")
+        template = env.get_template(hfile)
+        template_vars = {"pca": data_pca[2].to_html()}
+        html_out = template.render(template_vars)
+
+        return html_out
 

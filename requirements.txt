@@ -10,3 +10,6 @@ scikit-image
 ipykernel>=4.6.1
 pytest
 pytest-cov
+
+jinja2
+weasyprint
