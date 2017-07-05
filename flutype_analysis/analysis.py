@@ -208,7 +208,7 @@ class Analysis(base.Base):
         """
 
         type    PCA :
-                IPA : Independened Component Analysis)
+                IPA : Independened Component Analysis
                 LDA : LinearDiscriminantAnalysis
 
         :return: (output_pca, pca_score, pca_components[0], feature_max_cor, cor_to_strongest_feature): where:

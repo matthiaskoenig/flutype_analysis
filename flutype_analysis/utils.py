@@ -10,8 +10,6 @@ import os
 import cv2
 import flutype_analysis
 
-
-
 PATTERN_PEP_GAL = "{}_pep.gal"
 PATTERN_VIR_GAL = "{}_vir.gal"
 PATTERN_META = "{}.meta"
@@ -104,6 +102,12 @@ def discrete_cmap(N, base_cmap=None):
     return base.from_list(cmap_name, color_list, N)
 
 def assure_path_exists(path):
+    """
+    creates folder if not existing
+
+    :param path:
+    :return:
+    """
     dir = os.path.dirname(path)
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -117,8 +121,6 @@ def merge_dataset(data1_id,data1_dir,data2_id, data2_dir, name):
 
     ana1.spots()
 
-def spot_data(spot,fname):
-    spot
 
 
 

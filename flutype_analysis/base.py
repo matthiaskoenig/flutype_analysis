@@ -49,8 +49,17 @@ class Base(object):
         else:
             spot["Std"] = data_std.unstack().values
 
+        spot=Base.add_replica(spot)
 
-        # how often this spot measured
+        return spot
+
+    @staticmethod
+    def add_replica(spot):
+        """
+        :param spot: Pandas DataFrame
+        :return:adds a row with numerated unique peptide and virus on spot
+        """
+
         spot["Replica"] = 0
         for virus_unique in spot["Virus"].unique():
             for peptide_unique in spot["Peptide"].unique():
@@ -59,5 +68,4 @@ class Base(object):
                     if spot["Virus"][index] == virus_unique and spot["Peptide"][index] == peptide_unique:
                         spot.set_value(index, "Replica", replica)
                         replica += 1
-
         return spot
