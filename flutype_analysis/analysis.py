@@ -23,6 +23,7 @@ from flutype_analysis import correlation
 from flutype_analysis import utils
 from flutype_analysis import base
 
+from matplotlib.figure import Figure
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -42,8 +43,9 @@ class Analysis(base.Base):
         :param kwargs:
         :return:
         """
+        fig = Figure(**kwargs)
+        ax = fig.add_subplot(111)
 
-        fig, ax = plt.subplots(**kwargs)
         # imshow portion
         if descript:
             alpha = 0.5
@@ -83,7 +85,7 @@ class Analysis(base.Base):
         :param kwargs:
         :return:
         """
-        fig = plt.figure(**kwargs)
+        fig = Figure(**kwargs)
         ax2 = plt.subplot(111)
         ax = ax2.twiny()
 

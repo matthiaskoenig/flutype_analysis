@@ -13,3 +13,6 @@ pytest-cov
 
 jinja2
 weasyprint
+
+mpld3
+
