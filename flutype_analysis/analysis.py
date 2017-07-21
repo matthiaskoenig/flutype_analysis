@@ -52,23 +52,23 @@ class Analysis(base.Base):
         else:
             alpha = 1.0
         if heatmap:
-            ax.imshow(self.spot.pivot(index='Column', columns='Row',
+            ax.imshow(self.spot.pivot(index='Row', columns='Column',
                                       values='Intensity'), interpolation='nearest',
                     cmap="hot", alpha=alpha)
         # plt.pcolor(Spot["Intensity"].unstack())
         # text portion
-        x, y = np.meshgrid(self.spot["Row"].unique() - 1, self.spot["Column"].unique() - 1)
+        x, y = np.meshgrid(self.spot["Column"].unique() - 1, self.spot["Row"].unique() - 1)
         for index in self.spot.index:
             # print(y_val)
             if descript:
-                ax.text(self.spot["Row"].loc[index] - 0.90, self.spot["Column"].loc[index] - 0.90, self.spot["Peptide"].loc[index],
+                ax.text(self.spot["Column"].loc[index] - 0.90, self.spot["Row"].loc[index] - 0.90, self.spot["Peptide"].loc[index],
                         va='center', ha='center', fontsize=8, weight="bold", rotation=45)
-                ax.text(self.spot["Row"].loc[index] - 1.25, self.spot["Column"].loc[index] - 1.25, self.spot["Virus"].loc[index],
+                ax.text(self.spot["Column"].loc[index] - 1.25, self.spot["Row"].loc[index] - 1.25, self.spot["Virus"].loc[index],
                         va='center', ha='center', fontsize=8, weight="bold", rotation=45)
 
         # set tick marks for grid
-        ax.set_xticks(self.spot["Row"].values - 1.5)
-        ax.set_yticks(self.spot["Column"].values - 1.5)
+        ax.set_xticks(self.spot["Column"].values - 1.5)
+        ax.set_yticks(self.spot["Row"].values - 1.5)
 
         ax.set_xticklabels([])
         ax.set_yticklabels([])
