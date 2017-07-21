@@ -7,6 +7,12 @@ from flutype_analysis import utils
 
 
 def pca_2dplot(output_pca, **kwargs):
+    """
+    plots
+    :param output_pca:
+    :param kwargs:
+    :return:
+    """
     fig = plt.figure(**kwargs)
     plt.xlabel("princple component 1", size='large')
     plt.ylabel("princple component 2", size='large')
