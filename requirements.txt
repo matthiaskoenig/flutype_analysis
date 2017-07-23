@@ -12,7 +12,9 @@ pytest
 pytest-cov
 
 jinja2
-weasyprint
+
+# FIXME: is this needed, did not install on py3.6 for me
+# weasyprint
 
 mpld3
 
