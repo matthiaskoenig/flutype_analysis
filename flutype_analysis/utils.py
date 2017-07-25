@@ -12,7 +12,6 @@ import flutype_analysis
 
 PATTERN_PEP_GAL = "{}_pep.gal"
 PATTERN_VIR_GAL = "{}_vir.gal"
-PATTERN_META = "{}.meta"
 PATTERN_DATA = "{}.csv"
 PATTERN_STD = "{}_std.csv"
 PATTERN_TIF = "{}_600_100_635.tif"
@@ -42,13 +41,8 @@ def load_data(data_id, directory='data/flutype_test', what="all"):
 
     print("Peptide .gal :{}".format(f_gal_pep))
 
-    f_meta = os.path.join(directory, PATTERN_META.format(data_id))
-    d['meta'] = pd.read_csv(f_meta, sep='\t')
-
-    print("Meta  :{}".format(f_meta))
-
-    if what != "image2numeric":
-        f_data = os.path.join(directory, PATTERN_DATA.format(data_id))
+    f_data = os.path.join(directory, PATTERN_DATA.format(data_id))
+    if os.path.exists(f_data):
         d['data'] = pd.read_csv(f_data, sep='\t', index_col=0)
         print("Spot intensity file  :{}".format(f_data))
 

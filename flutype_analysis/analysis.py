@@ -86,7 +86,7 @@ class Analysis(base.Base):
         :return:
         """
         fig = Figure(**kwargs)
-        ax2 = plt.subplot(111)
+        ax2 = fig.add_subplot(111)
         ax = ax2.twiny()
 
         # for x-axis ticks and labels
