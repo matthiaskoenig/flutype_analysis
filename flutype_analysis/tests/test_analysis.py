@@ -9,10 +9,9 @@ def test_load_data():
     data_id = testdata.MICROARRAY_FLUTYPE_TEST_DATA_ID
 
     d = utils.load_data(data_id, directory)
-    assert len(d) == 5
+    assert len(d) == 4
     assert 'data_id' in d
     assert 'data' in d
-    assert 'meta' in d
     assert 'gal_pep' in d
     assert 'gal_vir' in d
 
