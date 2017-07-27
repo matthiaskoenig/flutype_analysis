@@ -11,7 +11,6 @@ class Base(object):
     def __init__(self, d_data):
         """ Init analysis object from given data dictionary. """
         self.data_id = d_data['data_id']
-        self.meta = d_data['meta']
         self.spot = self.create_spot(gal_vir=d_data["gal_vir"],
                                      gal_pep=d_data["gal_pep"],
                                      data=d_data.get("data", None),
