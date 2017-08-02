@@ -61,7 +61,6 @@ def load_data(data_id, directory='data/flutype_test', what="all"):
 
     return d
 
-
 def map_strings_to_number(strings):
     """Transforms list of strings into numbers."""
     counter = 1
