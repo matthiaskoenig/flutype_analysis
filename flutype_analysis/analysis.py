@@ -25,14 +25,15 @@ from flutype_analysis import base
 
 from matplotlib.figure import Figure
 
-from jinja2 import Environment, FileSystemLoader
+# from jinja2 import Environment, FileSystemLoader
 
 import os
 
+
 class Analysis(base.Base):
 
-    def  __init__(self , d_data):
-        base.Base.__init__(self , d_data)
+    def __init__(self, d_data):
+        base.Base.__init__(self, d_data)
 
 
     def heatmap(self, descript=True, heatmap=True, **kwargs):
@@ -53,8 +54,7 @@ class Analysis(base.Base):
             alpha = 1.0
         if heatmap:
             ax.imshow(self.spot.pivot(index='Row', columns='Column',
-                                      values='Intensity'), interpolation='nearest',
-                    cmap="hot", alpha=alpha)
+                                      values='Intensity'), interpolation='nearest', cmap="hot", alpha=alpha)
         # plt.pcolor(Spot["Intensity"].unstack())
         # text portion
         x, y = np.meshgrid(self.spot["Column"].unique() - 1, self.spot["Row"].unique() - 1)
