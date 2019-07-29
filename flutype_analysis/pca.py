@@ -18,7 +18,7 @@ def pca_2dplot(output_pca, **kwargs):
     plt.ylabel("princple component 2", size='large')
     plt.tick_params(labelsize="large")
     plt.scatter(output_pca[0], output_pca[1],
-                c=output_pca["color"].values, cmap=utils.discrete_cmap(output_pca["color"].values.max(), 'jet'))
+                c=output_pca["color"].values, cmap=utils.discrete_cmap(output_pca["color"].values.max(), 'brg'))
 
     color_mapping = output_pca[['color']].sort_values(by=["color"])
 

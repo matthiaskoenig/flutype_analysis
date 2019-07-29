@@ -65,15 +65,15 @@ def map_strings_to_number(strings):
     """Transforms list of strings into numbers."""
     counter = 1
     d = {}
-    numbers = []
+
     for s in strings:
         if s in d:
             pass
         else:
             d[s] = counter
             counter += 1
-        numbers.append(d[s])
-    return numbers
+
+    return d
 
 
 def discrete_cmap(N, base_cmap=None):

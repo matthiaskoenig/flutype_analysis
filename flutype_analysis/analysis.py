@@ -51,6 +51,7 @@ class Analysis(base.Base):
             alpha = 0.5
         else:
             alpha = 1.0
+
         if heatmap:
             ax.imshow(self.spot.pivot(index='Row', columns='Column',
                                       values='Intensity'), interpolation='nearest',
